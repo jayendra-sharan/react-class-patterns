@@ -15,14 +15,21 @@ class RenderPropToggle extends React.Component {
       }),
       () => this.props.onToggle(this.state.on)
     );
-  state = { on: true };
+
+  initialState = { on: true }
+  state = this.initialState;
 
   getStateAndHelpers = () => {
     return {
       on: this.state.on,
       toggle: this.toggle,
-      getTogglerProps: this.getTogglerProps
+      getTogglerProps: this.getTogglerProps,
+      reset: this.reset,
     }
+  }
+
+  reset = () => {
+    this.setState(this.initialState);
   }
 
   getTogglerProps = ({onClick, ...props}) => {

@@ -9,7 +9,9 @@ function App() {
     <div className="App">
       <h1>React class patterns</h1>
       <CompoundToggle onToggle={onToggle}>
-        <CompoundToggle.Button />
+        <div>
+          <CompoundToggle.Button />
+        </div>
         <CompoundToggle.On>The button is on.</CompoundToggle.On>
         <CompoundToggle.Off>The button is off.</CompoundToggle.Off>
       </CompoundToggle>

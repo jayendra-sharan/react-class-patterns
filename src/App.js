@@ -1,5 +1,6 @@
 import './App.css';
-import CompoundToggle from './CompoundToggle';
+import RenderPropToggle from './RenderPropToggle';
+import Switch from './Switch';
 
 function App() {
   const onToggle = (...args) => {
@@ -8,13 +9,16 @@ function App() {
   return (
     <div className="App">
       <h1>React class patterns</h1>
-      <CompoundToggle onToggle={onToggle}>
-        <div>
-          <CompoundToggle.Button />
-        </div>
-        <CompoundToggle.On>The button is on.</CompoundToggle.On>
-        <CompoundToggle.Off>The button is off.</CompoundToggle.Off>
-      </CompoundToggle>
+      <RenderPropToggle onToggle={onToggle}>
+        {({ on, toggle }) => (
+          <div>
+            {on ? "The Button is On." : "The Button is Off"}
+            <Switch on={on} onClick={toggle} />
+            <hr />
+            <button onClick={toggle}>{on ? "ON" : "OFF"}</button>
+          </div>
+        )}
+      </RenderPropToggle>
     </div>
   );
 }

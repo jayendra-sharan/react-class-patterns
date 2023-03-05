@@ -15,7 +15,7 @@ class CompoundToggle extends React.Component {
       }),
       () => this.props.onToggle(this.state.on)
     );
-  state = { on: true };
+  state = { on: true, toggle: this.toggle };
 
   static On = ({ children }) => {
     return (
@@ -43,10 +43,7 @@ class CompoundToggle extends React.Component {
 
 
   render() {
-    return (<ToggleContext.Provider value={{
-      on: this.state.on,
-      toggle: this.toggle,
-    }}>
+    return (<ToggleContext.Provider value={this.state}>
       {this.props.children}
     </ToggleContext.Provider>)
   }

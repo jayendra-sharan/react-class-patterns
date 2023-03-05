@@ -15,11 +15,19 @@ class RenderPropToggle extends React.Component {
     );
   state = { on: true };
 
-  render() {
-    return this.props.children({
+  getStateAndHelpers = () => {
+    return {
       on: this.state.on,
       toggle: this.toggle,
-    })
+      togglerProps: {
+        onClick: this.toggle,
+        'aria-pressed': this.state.on
+      }
+    }
+  }
+
+  render() {
+    return this.props.children(this.getStateAndHelpers())
   }
 }
 

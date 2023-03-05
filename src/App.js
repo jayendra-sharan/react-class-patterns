@@ -10,12 +10,12 @@ function App() {
     <div className="App">
       <h1>React class patterns</h1>
       <RenderPropToggle onToggle={onToggle}>
-        {({ on, toggle }) => (
+        {({ on, togglerProps }) => (
           <div>
             {on ? "The Button is On." : "The Button is Off"}
-            <Switch on={on} onClick={toggle} />
+            <Switch on={on} {...togglerProps} />
             <hr />
-            <button onClick={toggle}>{on ? "ON" : "OFF"}</button>
+            <button {...togglerProps} >{on ? "ON" : "OFF"}</button>
           </div>
         )}
       </RenderPropToggle>

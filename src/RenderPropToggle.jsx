@@ -1,5 +1,7 @@
 import React from "react";
 
+
+const callAll = (...fns) => (...args) => fns.forEach(fn => fn && fn(...args))
 class RenderPropToggle extends React.Component {
   static defaultProps = {
     onToggle: () => {},
@@ -19,10 +21,15 @@ class RenderPropToggle extends React.Component {
     return {
       on: this.state.on,
       toggle: this.toggle,
-      togglerProps: {
-        onClick: this.toggle,
-        'aria-pressed': this.state.on
-      }
+      getTogglerProps: this.getTogglerProps
+    }
+  }
+
+  getTogglerProps = ({onClick, ...props}) => {
+    return {
+      ...props,
+      'aria-pressed': this.state.on,
+      onClick: callAll(onClick, this.toggle),
     }
   }
 

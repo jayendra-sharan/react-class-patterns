@@ -5,19 +5,28 @@ const callAll = (...fns) => (...args) => fns.forEach(fn => fn && fn(...args))
 class RenderPropToggle extends React.Component {
   static defaultProps = {
     onToggle: () => {},
-    renderUI: () => {}
+    renderUI: () => {},
+    initialOn: false,
   }
 
   toggle = () =>
-    this.setState(
+    this.internalSetstate(
       (currentState) => ({
         on: !currentState.on
       }),
       () => this.props.onToggle(this.state.on)
     );
 
-  initialState = { on: true }
+  initialState = { on: this.props.initialOn }
   state = this.initialState;
+  
+  internalSetstate(changes, callback) {
+    this.setState(state => {
+      const changesObject = typeof changes === "function" ? changes(state) : changes;
+      const reducedChanges = this.props.stateReducer(state, changesObject)
+      return reducedChanges
+    }, callback);
+  }
 
   getStateAndHelpers = () => {
     return {
@@ -29,7 +38,9 @@ class RenderPropToggle extends React.Component {
   }
 
   reset = () => {
-    this.setState(this.initialState);
+    this.internalSetstate(this.initialState, () => {
+      this.props.onReset(this.initialState)
+    });
   }
 
   getTogglerProps = ({onClick, ...props}) => {

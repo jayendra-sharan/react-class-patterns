@@ -9,10 +9,17 @@ class RenderPropToggle extends React.Component {
     initialOn: false,
   }
 
-  toggle = () =>
+  static stateChangeTypes = {
+    reset: '__reset__',
+    toggle: '__toggle__',
+    force: '__force__',
+  }
+
+  toggle = ({ type = RenderPropToggle.stateChangeTypes.toggle } = {}) =>
     this.internalSetstate(
       (currentState) => ({
-        on: !currentState.on
+        on: !currentState.on,
+        type,
       }),
       () => this.props.onToggle(this.state.on)
     );
@@ -24,7 +31,8 @@ class RenderPropToggle extends React.Component {
     this.setState(state => {
       const changesObject = typeof changes === "function" ? changes(state) : changes;
       const reducedChanges = this.props.stateReducer(state, changesObject)
-      return reducedChanges
+      const {type: ignoreType, ...stateChanges } = reducedChanges;
+      return stateChanges;
     }, callback);
   }
 
@@ -38,7 +46,7 @@ class RenderPropToggle extends React.Component {
   }
 
   reset = () => {
-    this.internalSetstate(this.initialState, () => {
+    this.internalSetstate({...this.initialState, type: RenderPropToggle.stateChangeTypes.reset}, () => {
       this.props.onReset(this.initialState)
     });
   }
@@ -47,7 +55,7 @@ class RenderPropToggle extends React.Component {
     return {
       ...props,
       'aria-pressed': this.state.on,
-      onClick: callAll(onClick, this.toggle),
+      onClick: callAll(onClick, () => this.toggle()),
     }
   }
 

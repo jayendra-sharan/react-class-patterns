@@ -23,6 +23,9 @@ class Usage extends React.Component {
   }
 
   stateReducer = (state, changes) => {
+    if (changes.type === RenderPropToggle.stateChangeTypes.force) {
+      return changes;
+    }
     if (this.state.timesClicked >= 4) {
       return {
         ...changes,
@@ -40,11 +43,19 @@ class Usage extends React.Component {
         onReset={this.handleReset}
         initialOn
       >
-        {({ on, reset, getTogglerProps }) => (
+        {({ on, reset, toggle, getTogglerProps }) => (
           <div>
             <Switch {...getTogglerProps({ on })} />
             {
-              timesClicked > 4 ? 'Clicked too many times' : (
+              timesClicked > 4 ? (
+                <div>
+                  <p>Clicked too many times</p>
+                  <button
+                    onClick={() => toggle({type: RenderPropToggle.stateChangeTypes.force})}>
+                      Force Toggle
+                    </button>
+                </div>
+              ) : (
                 timesClicked > 0 ? `You clicked ${timesClicked} times` : null
               )
             }

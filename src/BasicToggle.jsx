@@ -5,6 +5,11 @@ class BasicToggle extends React.Component {
   static defaultProps = {
     onToggle: () => {}
   }
+  getState() {
+    return {
+      on: this.props.on !== undefined ? this.props.on : this.state.on
+    }
+  }
   toggle = () =>
     this.setState(
       (currentState) => ({
@@ -12,9 +17,9 @@ class BasicToggle extends React.Component {
       }),
       () => this.props.onToggle(this.state.on)
     );
-  state = { on: true };
+  state = { on: false };
   render() {
-    return <Switch on={this.state.on} onClick={this.toggle} />;
+    return <Switch on={this.getState().on} onClick={this.toggle} />;
   }
 }
 
